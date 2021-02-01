@@ -1,0 +1,39 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Course {
+  id: String!
+  name: String
+  teamIds: [String!]
+  teams: [Team!]!
+}
+
+type User {
+  id: String!
+  firstName: String
+  lastName: String
+  github: String
+  telegram: String
+  discord: String
+  score: Int!
+  country: String
+  city: String
+  isAdmin: Boolean!
+  courses: [Course!]
+}
+
+type Team {
+  id: String!
+  number: Int!
+  password: String!
+  members: [User!]
+  courseId: String!
+  course: Course!
+}
+
+type Query {
+  user(github: String!): User
+  courses: [Course!]
+  teams: [Team!]
+}
