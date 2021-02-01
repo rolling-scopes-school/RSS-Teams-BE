@@ -23,7 +23,7 @@
     "typeorm:migrate": "npm run typeorm migration:generate -- -n",
     "typeorm:run": "npm run typeorm migration:run",
     "postinstall": "node postinstall",
-    "deploy:manual": "heroku git:remote -a rss-teams-dev"
+    "deploy:manual": "git push heroku main"
   },
   "dependencies": {
     "@nestjs/common": "^7.5.1",
