@@ -1,6 +1,5 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 
-import { Course } from '../../courses/models/course.object-type';
 import { IUser } from './user.interface';
 
 @ObjectType()
@@ -35,6 +34,6 @@ export class User implements IUser {
   @Field({ defaultValue: false })
   public isAdmin: boolean;
 
-  @Field(() => [Course], { nullable: true })
-  public courses?: Course[];
+  @Field(() => [String], { nullable: true })
+  public courseIds?: string[];
 }

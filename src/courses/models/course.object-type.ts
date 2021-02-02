@@ -13,6 +13,6 @@ export class Course implements ICourse {
   @Field(() => [String], { nullable: true })
   public teamIds?: string[];
 
-  // @Field({ nullable: true })
-  // public teams?: Team[];
+  @Field(() => [String], { nullable: true })
+  public userIds?: string[];
 }

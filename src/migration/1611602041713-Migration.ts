@@ -16,7 +16,8 @@ export class Migration1611602041713 implements MigrationInterface {
     await queryRunner.query(
       `INSERT INTO public.rss_users (id, first_name, last_name, github, telegram, discord, score, country, city, is_admin)
             VALUES
-                (uuid_generate_v4(), 'Andrei', 'Shelenhouski', 'manuminsk', '', '', 1000, 'Belarus', 'Minsk', true)`,
+                (uuid_generate_v4(), 'Andrei', 'Sh', 'manuminsk', '', '', 1000, 'Belarus', 'Minsk', true),
+                (uuid_generate_v4(), 'Mada', 'ShindeInai', 'MadaShindeInai', '', '', 1000, 'Belarus', 'Minsk', true)`,
     );
     await queryRunner.query(
       `INSERT INTO public.rss_courses (id, name)

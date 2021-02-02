@@ -13,12 +13,17 @@ export class UsersService {
   ) {}
 
   public findAll(): Promise<UserEntity[]> {
-    return this.usersRepository.find();
+    return this.usersRepository.find({ loadRelationIds: true });
+  }
+
+  public findByIds(ids: string[]): Promise<UserEntity[]> {
+    return this.usersRepository.findByIds(ids);
   }
 
   public findOne(github: string): Promise<UserEntity> {
     return this.usersRepository.findOne({
       where: { github: Like(`%${github}%`) },
+      loadRelationIds: true,
     });
   }
 }

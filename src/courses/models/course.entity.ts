@@ -1,5 +1,6 @@
 import { TeamEntity } from 'src/teams/models/team.entity';
-import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { UserEntity } from 'src/users/models/user.entity';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 import { ICourse } from './course.interface';
 
@@ -14,4 +15,10 @@ export class CourseEntity implements ICourse {
   @OneToMany(() => TeamEntity, team => team.courseId)
   @JoinColumn({ name: 'teamIds' })
   public teamIds: string[];
+
+  @ManyToMany(() => UserEntity, { nullable: true })
+  @JoinTable({
+    name: 'users_courses',
+  })
+  public userIds: string[];
 }

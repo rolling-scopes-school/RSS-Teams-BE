@@ -1,5 +1,3 @@
-import { Course } from 'src/courses/models/course.object-type';
-
 export interface IUser {
   id: string;
   firstName?: string;
@@ -11,5 +9,5 @@ export interface IUser {
   country?: string;
   city?: string;
   isAdmin: boolean;
-  courses?: Course[];
+  courseIds?: string[];
 }

@@ -2,13 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Course {
-  id: String!
-  name: String
-  teamIds: [String!]
-  teams: [Team!]!
-}
-
 type User {
   id: String!
   firstName: String
@@ -20,7 +13,8 @@ type User {
   country: String
   city: String
   isAdmin: Boolean!
-  courses: [Course!]
+  courseIds: [String!]
+  courses: [Course!]!
 }
 
 type Team {
@@ -32,8 +26,18 @@ type Team {
   course: Course!
 }
 
+type Course {
+  id: String!
+  name: String
+  teamIds: [String!]
+  userIds: [String!]
+  teams: [Team!]!
+  users: [User!]!
+}
+
 type Query {
   user(github: String!): User
   courses: [Course!]
+  course(id: String!): Course
   teams: [Team!]
 }

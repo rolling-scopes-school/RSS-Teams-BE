@@ -16,17 +16,15 @@ export class CoursesService {
     return this.coursesRepository.find({ loadRelationIds: true });
   }
 
+  public findByIds(ids: string[]): Promise<CourseEntity[]> {
+    return this.coursesRepository.findByIds(ids);
+  }
+
   public findById(id: string): Promise<CourseEntity> {
     return this.coursesRepository.findOne(
       { id },
       {
         loadRelationIds: true,
-        join: {
-          alias: 'course',
-          leftJoinAndSelect: {
-            teamIds: 'course.teamIds',
-          },
-        },
       },
     );
   }
