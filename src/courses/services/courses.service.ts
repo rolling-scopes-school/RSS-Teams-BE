@@ -17,7 +17,7 @@ export class CoursesService {
   }
 
   public findByIds(ids: string[]): Promise<CourseEntity[]> {
-    return this.coursesRepository.findByIds(ids);
+    return this.coursesRepository.findByIds(ids, { loadRelationIds: true });
   }
 
   public findById(id: string): Promise<CourseEntity> {

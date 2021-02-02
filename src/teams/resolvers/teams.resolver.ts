@@ -1,5 +1,7 @@
 import { Course } from 'src/courses/models/course.object-type';
 import { CoursesService } from 'src/courses/services/courses.service';
+import { User } from 'src/users/models/user.object-type';
+import { UsersService } from 'src/users/services/users.service';
 
 import { Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 
@@ -11,6 +13,7 @@ export class TeamsResolver {
   constructor(
     private readonly teamsService: TeamsService,
     private readonly coursesService: CoursesService,
+    private readonly usersService: UsersService,
   ) {}
 
   @Query(() => [Team], { nullable: true })
@@ -18,10 +21,17 @@ export class TeamsResolver {
     return this.teamsService.findAll();
   }
 
-  @ResolveField(() => Course, { name: 'course' })
+  @ResolveField(() => Course, { name: 'course', nullable: true })
   public async course(@Parent() team: Team): Promise<Course> {
     const { courseId } = team;
 
     return this.coursesService.findById(courseId);
+  }
+
+  @ResolveField(() => [User], { name: 'members', nullable: true })
+  public async users(@Parent() team: Team): Promise<User[]> {
+    const { memberIds } = team;
+
+    return this.usersService.findByIds(memberIds);
   }
 }

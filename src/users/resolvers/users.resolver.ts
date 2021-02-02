@@ -1,5 +1,7 @@
 import { Course } from 'src/courses/models/course.object-type';
 import { CoursesService } from 'src/courses/services/courses.service';
+import { Team } from 'src/teams/models/team.object-type';
+import { TeamsService } from 'src/teams/services/teams.service';
 import { User } from 'src/users/models/user.object-type';
 
 import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
@@ -11,6 +13,7 @@ export class UsersResolver {
   constructor(
     private readonly usersService: UsersService,
     private readonly coursesService: CoursesService,
+    private readonly teamsService: TeamsService,
   ) {}
 
   @Query(() => User, { nullable: true })
@@ -18,11 +21,22 @@ export class UsersResolver {
     return this.usersService.findOne(github);
   }
 
-  @ResolveField(() => [Course], { name: 'courses' })
+  @Query(() => [User], { nullable: true })
+  public async users(): Promise<User[]> {
+    return this.usersService.findAll();
+  }
+
+  @ResolveField(() => [Course], { name: 'courses', nullable: true })
   public async courses(@Parent() user: User): Promise<Course[]> {
-    console.log(user);
     const { courseIds } = user;
 
     return this.coursesService.findByIds(courseIds);
+  }
+
+  @ResolveField(() => [Team], { name: 'teams', nullable: true })
+  public async teams(@Parent() user: User): Promise<Course[]> {
+    const { teamIds } = user;
+
+    return this.teamsService.findByIds(teamIds);
   }
 }

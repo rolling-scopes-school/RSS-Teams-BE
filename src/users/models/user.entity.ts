@@ -1,4 +1,5 @@
 import { CourseEntity } from 'src/courses/models/course.entity';
+import { TeamEntity } from 'src/teams/models/team.entity';
 import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 import { IUser } from './user.interface';
@@ -40,4 +41,10 @@ export class UserEntity implements IUser {
     name: 'users_courses',
   })
   public courseIds: string[];
+
+  @ManyToMany(() => TeamEntity, { nullable: true })
+  @JoinTable({
+    name: 'users_teams',
+  })
+  public teamIds: string[];
 }

@@ -10,4 +10,5 @@ export interface IUser {
   city?: string;
   isAdmin: boolean;
   courseIds?: string[];
+  teamIds: string[];
 }

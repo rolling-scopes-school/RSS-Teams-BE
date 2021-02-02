@@ -36,4 +36,7 @@ export class User implements IUser {
 
   @Field(() => [String], { nullable: true })
   public courseIds?: string[];
+
+  @Field(() => [String], { nullable: true })
+  public teamIds: string[];
 }

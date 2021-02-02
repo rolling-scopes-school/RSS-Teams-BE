@@ -13,11 +13,11 @@ export class UsersService {
   ) {}
 
   public findAll(): Promise<UserEntity[]> {
-    return this.usersRepository.find({ loadRelationIds: true });
+    return this.usersRepository.find({ loadRelationIds: true, order: { score: 'DESC' } });
   }
 
   public findByIds(ids: string[]): Promise<UserEntity[]> {
-    return this.usersRepository.findByIds(ids);
+    return this.usersRepository.findByIds(ids, { loadRelationIds: true });
   }
 
   public findOne(github: string): Promise<UserEntity> {
