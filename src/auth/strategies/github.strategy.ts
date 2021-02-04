@@ -42,8 +42,8 @@ export class GitHubStrategy extends PassportStrategy(Strategy) {
     const name: string[] = profile.displayName.split(' ');
 
     return {
-      firstName: name.shift(),
-      lastName: name.shift(),
+      firstName: name.shift() ?? '',
+      lastName: name.shift() ?? '',
       github: profile.username,
       avatar: profile.photos.shift().value,
       email: profile.emails.shift().value,
