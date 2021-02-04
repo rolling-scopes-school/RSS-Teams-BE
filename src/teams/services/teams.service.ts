@@ -27,10 +27,11 @@ export class TeamsService {
   public async createTeam(props: ICreateTeam): Promise<TeamEntity> {
     const teams: TeamEntity[] = await this.teamsRepository.find({ courseId: props.courseId });
     const nextNumber: number = getNextTeamNumber(teams);
+    const password: string = Math.random().toString(36).substr(2, 8);
 
     const team: TeamEntity = this.teamsRepository.create({
       ...props,
-      password: Math.random().toString(36).substr(2, 8),
+      password,
       number: nextNumber,
     });
 
