@@ -2,6 +2,15 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Course {
+  id: String!
+  name: String
+  teamIds: [String!]
+  userIds: [String!]
+  teams: [Team!]!
+  users: [User!]!
+}
+
 type Team {
   id: String!
   number: Int!
@@ -23,6 +32,8 @@ type User {
   score: Int!
   country: String
   city: String
+  avatar: String
+  email: String
   isAdmin: Boolean!
   courseIds: [String!]
   teamIds: [String!]
@@ -30,18 +41,10 @@ type User {
   teams: [Team!]
 }
 
-type Course {
-  id: String!
-  name: String
-  teamIds: [String!]
-  userIds: [String!]
-  teams: [Team!]!
-  users: [User!]!
-}
-
 type Query {
   user(github: String!): User
   users: [User!]
+  whoAmI: User!
   courses: [Course!]
   course(id: String!): Course
   teams: [Team!]

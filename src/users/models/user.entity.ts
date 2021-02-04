@@ -33,6 +33,12 @@ export class UserEntity implements IUser {
   @Column({ nullable: true, type: 'character varying', length: 255 })
   public city?: string;
 
+  @Column({ nullable: true, type: 'character varying', length: 255 })
+  public avatar?: string;
+
+  @Column({ nullable: true, type: 'character varying', length: 255 })
+  public email?: string;
+
   @Column({ name: 'is_admin', default: false, type: 'boolean' })
   public isAdmin: boolean;
 

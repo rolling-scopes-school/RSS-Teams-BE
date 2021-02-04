@@ -3,12 +3,14 @@ export interface IUser {
   firstName?: string;
   lastName?: string;
   github?: string;
+  avatar?: string;
+  email?: string;
   telegram?: string;
   discord?: string;
   score: number;
   country?: string;
   city?: string;
   isAdmin: boolean;
-  courseIds?: string[];
+  courseIds: string[];
   teamIds: string[];
 }

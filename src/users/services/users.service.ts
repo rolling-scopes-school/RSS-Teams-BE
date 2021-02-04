@@ -4,6 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { UserEntity } from '../models/user.entity';
+import { IUser } from '../models/user.interface';
 
 @Injectable()
 export class UsersService {
@@ -25,5 +26,11 @@ export class UsersService {
       where: { github: Like(`%${github}%`) },
       loadRelationIds: true,
     });
+  }
+
+  public createUser(data: Partial<IUser>): Promise<UserEntity> {
+    const user: UserEntity = this.usersRepository.create(data);
+
+    return this.usersRepository.save(user);
   }
 }

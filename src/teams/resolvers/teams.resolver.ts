@@ -1,8 +1,10 @@
+import { GqlAuthGuard } from 'src/auth/guards/gql-auth.guard';
 import { Course } from 'src/courses/models/course.object-type';
 import { CoursesService } from 'src/courses/services/courses.service';
 import { User } from 'src/users/models/user.object-type';
 import { UsersService } from 'src/users/services/users.service';
 
+import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 
 import { CreateTeamInput, UpdateTeamInput } from '../models/team.input-type';
@@ -19,6 +21,7 @@ export class TeamsResolver {
   ) {}
 
   @Query(() => [Team], { nullable: true })
+  @UseGuards(GqlAuthGuard)
   public async teams(): Promise<Team[]> {
     return this.teamsService.findAll();
   }
@@ -38,6 +41,7 @@ export class TeamsResolver {
   }
 
   @Mutation(() => Team, { name: 'createTeam' })
+  @UseGuards(GqlAuthGuard)
   public async createTeam(
     @Args({ name: 'team', type: () => CreateTeamInput }) team: ICreateTeam,
   ): Promise<Team> {
@@ -45,6 +49,7 @@ export class TeamsResolver {
   }
 
   @Mutation(() => Team, { name: 'updateTeam' })
+  @UseGuards(GqlAuthGuard)
   public async updateTeam(
     @Args({ name: 'team', type: () => UpdateTeamInput }) team: IUpdateTeam,
   ): Promise<Team> {

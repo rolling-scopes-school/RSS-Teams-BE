@@ -31,11 +31,17 @@ export class User implements IUser {
   @Field({ nullable: true })
   public city?: string;
 
+  @Field({ nullable: true })
+  public avatar?: string;
+
+  @Field({ nullable: true })
+  public email?: string;
+
   @Field({ defaultValue: false })
   public isAdmin: boolean;
 
   @Field(() => [String], { nullable: true })
-  public courseIds?: string[];
+  public courseIds: string[];
 
   @Field(() => [String], { nullable: true })
   public teamIds: string[];
