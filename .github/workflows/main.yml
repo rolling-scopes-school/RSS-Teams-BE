@@ -2,11 +2,11 @@
 
 name: CI
 
-# Controls when the action will run. 
+# Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ main ]
+    branches: [main]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -35,4 +35,4 @@ jobs:
           # The Heroku branch name that you would like to deploy to (`master` or `main`).
           heroku_branch: main
           # The subfolder where your built code is sitted, e.g. `dist`.
-          subfolder: dist
+          # subfolder: dist
