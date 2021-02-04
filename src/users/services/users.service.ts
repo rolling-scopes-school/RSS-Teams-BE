@@ -1,4 +1,4 @@
-import { Like, Repository } from 'typeorm';
+import { Connection, Like, Repository } from 'typeorm';
 
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -11,6 +11,7 @@ export class UsersService {
   constructor(
     @InjectRepository(UserEntity)
     private usersRepository: Repository<UserEntity>,
+    private readonly connection: Connection,
   ) {}
 
   public findAll(): Promise<UserEntity[]> {
@@ -32,5 +33,26 @@ export class UsersService {
     const user: UserEntity = this.usersRepository.create(data);
 
     return this.usersRepository.save(user);
+  }
+
+  public async updateUser(data: Partial<IUser>): Promise<UserEntity> {
+    const { id, courseIds, ...user } = data;
+    await this.usersRepository.update(id, { ...user });
+
+    const findUser: Promise<UserEntity> = this.usersRepository.findOne(data.id, {
+      loadRelationIds: true,
+    });
+
+    const userEntity: UserEntity = await findUser;
+
+    courseIds?.forEach(async item => {
+      await this.connection
+        .createQueryBuilder()
+        .relation(UserEntity, 'courseIds')
+        .of(userEntity)
+        .add(item);
+    });
+
+    return findUser;
   }
 }

@@ -39,18 +39,14 @@ export class GitHubStrategy extends PassportStrategy(Strategy) {
   }
 
   private mapGitHubToLocalProfile(profile: IGitHubProfile): Partial<IUser> {
-    console.log('===================== / map github profile / =====================');
-    console.log(profile);
-    console.log('===================== / map github profile / =====================');
-
-    const name: string[] = profile.displayName?.split(' ');
+    const name: string[] = profile?.displayName?.split(' ');
 
     return {
-      firstName: name?.shift() ?? '',
-      lastName: name?.shift() ?? '',
+      firstName: name?.shift(),
+      lastName: name?.shift(),
       github: profile?.username,
-      avatar: profile?.photos?.shift().value,
-      email: profile?.emails?.shift().value,
+      avatar: profile?.photos?.shift()?.value,
+      email: profile?.emails?.shift()?.value,
     };
   }
 }

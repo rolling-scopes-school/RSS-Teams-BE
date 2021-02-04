@@ -51,8 +51,22 @@ type Query {
 }
 
 type Mutation {
+  updateUser(user: UpdateUserInput!): User!
   createTeam(team: CreateTeamInput!): Team!
   updateTeam(team: UpdateTeamInput!): Team!
+}
+
+input UpdateUserInput {
+  id: String!
+  firstName: String
+  lastName: String
+  email: String
+  telegram: String
+  discord: String
+  score: Float
+  country: String
+  city: String
+  courseIds: [String!]
 }
 
 input CreateTeamInput {

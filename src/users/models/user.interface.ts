@@ -14,3 +14,5 @@ export interface IUser {
   courseIds: string[];
   teamIds: string[];
 }
+
+export type IUpdateUser = Partial<IUser>;
