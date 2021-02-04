@@ -24,13 +24,13 @@ export class TeamsService {
     return this.teamsRepository.findByIds(ids, { loadRelationIds: true, order: { number: 'ASC' } });
   }
 
-  public async createTeam(props: ICreateTeam): Promise<TeamEntity> {
-    const teams: TeamEntity[] = await this.teamsRepository.find({ courseId: props.courseId });
+  public async createTeam(data: ICreateTeam): Promise<TeamEntity> {
+    const teams: TeamEntity[] = await this.teamsRepository.find({ courseId: data.courseId });
     const nextNumber: number = getNextTeamNumber(teams);
     const password: string = Math.random().toString(36).substr(2, 8);
 
     const team: TeamEntity = this.teamsRepository.create({
-      ...props,
+      ...data,
       password,
       number: nextNumber,
     });
@@ -38,9 +38,9 @@ export class TeamsService {
     return this.teamsRepository.save(team);
   }
 
-  public async updateTeam(props: IUpdateTeam): Promise<TeamEntity> {
-    await this.teamsRepository.update(props.id, { tgLink: props.tgLink });
+  public async updateTeam(data: IUpdateTeam): Promise<TeamEntity> {
+    await this.teamsRepository.update(data.id, { tgLink: data.tgLink });
 
-    return this.teamsRepository.findOne(props.id);
+    return this.teamsRepository.findOne(data.id, { loadRelationIds: true });
   }
 }
