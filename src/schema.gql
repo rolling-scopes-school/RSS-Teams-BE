@@ -46,3 +46,18 @@ type Query {
   course(id: String!): Course
   teams: [Team!]
 }
+
+type Mutation {
+  createTeam(team: CreateTeamInput!): Team!
+  updateTeam(team: UpdateTeamInput!): Team!
+}
+
+input CreateTeamInput {
+  tgLink: String!
+  courseId: String!
+}
+
+input UpdateTeamInput {
+  id: String!
+  tgLink: String!
+}
