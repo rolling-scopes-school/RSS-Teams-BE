@@ -1,9 +1,12 @@
+import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
+import { GqlAuthGuard } from 'src/auth/guards/gql-auth.guard';
 import { Course } from 'src/courses/models/course.object-type';
 import { CoursesService } from 'src/courses/services/courses.service';
 import { Team } from 'src/teams/models/team.object-type';
 import { TeamsService } from 'src/teams/services/teams.service';
 import { User } from 'src/users/models/user.object-type';
 
+import { UseGuards } from '@nestjs/common';
 import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 
 import { UsersService } from '../services/users.service';
@@ -17,13 +20,21 @@ export class UsersResolver {
   ) {}
 
   @Query(() => User, { nullable: true })
+  @UseGuards(GqlAuthGuard)
   public async user(@Args('github', { type: () => String }) github: string): Promise<User> {
     return this.usersService.findOne(github);
   }
 
   @Query(() => [User], { nullable: true })
+  @UseGuards(GqlAuthGuard)
   public async users(): Promise<User[]> {
     return this.usersService.findAll();
+  }
+
+  @Query(() => User)
+  @UseGuards(GqlAuthGuard)
+  public whoAmI(@CurrentUser() user: User): Promise<User> {
+    return this.usersService.findOne(user.github);
   }
 
   @ResolveField(() => [Course], { name: 'courses', nullable: true })

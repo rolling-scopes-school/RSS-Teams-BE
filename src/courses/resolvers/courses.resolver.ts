@@ -1,8 +1,10 @@
+import { GqlAuthGuard } from 'src/auth/guards/gql-auth.guard';
 import { Team } from 'src/teams/models/team.object-type';
 import { TeamsService } from 'src/teams/services/teams.service';
 import { User } from 'src/users/models/user.object-type';
 import { UsersService } from 'src/users/services/users.service';
 
+import { UseGuards } from '@nestjs/common';
 import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 
 import { Course } from '../models/course.object-type';
@@ -17,11 +19,13 @@ export class CoursesResolver {
   ) {}
 
   @Query(() => [Course], { nullable: true })
+  @UseGuards(GqlAuthGuard)
   public async courses(): Promise<Course[]> {
     return this.courseService.findAll();
   }
 
   @Query(() => Course, { nullable: true })
+  @UseGuards(GqlAuthGuard)
   public async course(@Args('id', { type: () => String }) id: string): Promise<Course> {
     return this.courseService.findById(id);
   }
