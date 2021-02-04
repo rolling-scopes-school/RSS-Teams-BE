@@ -5,7 +5,6 @@ import { Controller, Get, Param, Redirect, Request, UseGuards } from '@nestjs/co
 import { ConfigService } from '@nestjs/config';
 import { AuthGuard } from '@nestjs/passport';
 
-import { ENVIRONMENT } from '../constants/env.enum';
 import { AuthService } from '../services/auth.service';
 
 @Controller('auth')
@@ -30,10 +29,11 @@ export class AuthController {
     const token: string = (await this.authService.login(req.user as IUser)).access_token;
     const NODE_ENV: string = this.configService.get('NODE_ENV');
 
-    const host: string =
-      NODE_ENV === ENVIRONMENT.Develop ? 'http://localhost:3000' : 'https://rss-teams.web.app';
+    // const host: string =
+    //   NODE_ENV === ENVIRONMENT.Develop ? 'http://localhost:3000' : 'https://rss-teams.web.app';
+    const host: string = 'http://localhost:3000';
 
-    return { url: `${host}/auth/token/${token}` };
+    return { url: `${host}/?token=${token}` };
   }
 
   @Get('token/:token')
