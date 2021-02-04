@@ -3,8 +3,10 @@ import { CoursesService } from 'src/courses/services/courses.service';
 import { User } from 'src/users/models/user.object-type';
 import { UsersService } from 'src/users/services/users.service';
 
-import { Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 
+import { CreateTeamInput, UpdateTeamInput } from '../models/team.input-type';
+import { ICreateTeam, IUpdateTeam } from '../models/team.interface';
 import { Team } from '../models/team.object-type';
 import { TeamsService } from '../services/teams.service';
 
@@ -33,5 +35,19 @@ export class TeamsResolver {
     const { memberIds } = team;
 
     return this.usersService.findByIds(memberIds);
+  }
+
+  @Mutation(() => Team, { name: 'createTeam' })
+  public async createTeam(
+    @Args({ name: 'team', type: () => CreateTeamInput }) team: ICreateTeam,
+  ): Promise<Team> {
+    return this.teamsService.createTeam(team);
+  }
+
+  @Mutation(() => Team, { name: 'updateTeam' })
+  public async updateTeam(
+    @Args({ name: 'team', type: () => UpdateTeamInput }) team: IUpdateTeam,
+  ): Promise<Team> {
+    return this.teamsService.updateTeam(team);
   }
 }
