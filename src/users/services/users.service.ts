@@ -6,7 +6,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { UserEntity } from '../models/user.entity';
-import { IAddUserToTeam, IUser } from '../models/user.interface';
+import { IUser, IUserFromTeam, IUserToTeam } from '../models/user.interface';
 
 @Injectable()
 export class UsersService {
@@ -38,7 +38,7 @@ export class UsersService {
     return this.usersRepository.save(user);
   }
 
-  public async addUserToTeam(data: IAddUserToTeam): Promise<UserEntity> {
+  public async addUserToTeam(data: IUserToTeam): Promise<UserEntity> {
     const team: ITeam = await this.teamsService.findTeamByPassword(
       data.courseId,
       data.teamPassword,
@@ -55,6 +55,22 @@ export class UsersService {
         .of(userEntity)
         .add(team.id);
     }
+
+    return this.usersRepository.findOne(data.userId, {
+      loadRelationIds: true,
+    });
+  }
+
+  public async removeUserFromTeam(data: IUserFromTeam): Promise<UserEntity> {
+    const userEntity: UserEntity = await this.usersRepository.findOne(data.userId, {
+      loadRelationIds: true,
+    });
+
+    await this.connection
+      .createQueryBuilder()
+      .relation(UserEntity, 'teamIds')
+      .of(userEntity)
+      .remove(data.teamId);
 
     return this.usersRepository.findOne(data.userId, {
       loadRelationIds: true,

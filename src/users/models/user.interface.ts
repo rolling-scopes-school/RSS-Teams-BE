@@ -17,8 +17,13 @@ export interface IUser {
 
 export type IUpdateUser = Partial<IUser>;
 
-export interface IAddUserToTeam {
+export interface IUserToTeam {
   userId: string;
   courseId: string;
   teamPassword: string;
+}
+
+export interface IUserFromTeam {
+  userId: string;
+  teamId: string;
 }

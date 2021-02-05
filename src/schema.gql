@@ -53,6 +53,7 @@ type Query {
 type Mutation {
   updateUser(user: UpdateUserInput!): User!
   addUserToTeam(data: AddUserToTeamInput!): User!
+  removeUserFromTeam(data: RemoveUserFromTeamInput!): User!
   createTeam(team: CreateTeamInput!): Team!
   updateTeam(team: UpdateTeamInput!): Team!
 }
@@ -74,6 +75,11 @@ input AddUserToTeamInput {
   userId: String!
   courseId: String!
   teamPassword: String!
+}
+
+input RemoveUserFromTeamInput {
+  userId: String!
+  teamId: String!
 }
 
 input CreateTeamInput {
