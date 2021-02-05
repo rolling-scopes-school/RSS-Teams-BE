@@ -1,6 +1,9 @@
 import { GqlAuthGuard } from 'src/auth/guards/gql-auth.guard';
 import { Course } from 'src/courses/models/course.object-type';
 import { CoursesService } from 'src/courses/services/courses.service';
+import { IEntityList } from 'src/shared/models/entity-list.interface';
+import { PaginationInput } from 'src/shared/models/pagination.input-type';
+import { IPagination } from 'src/shared/models/pagination.interface';
 import { User } from 'src/users/models/user.object-type';
 import { UsersService } from 'src/users/services/users.service';
 
@@ -10,6 +13,7 @@ import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/g
 import { CreateTeamInput, UpdateTeamInput } from '../models/team.input-type';
 import { ICreateTeamDTO, IUpdateTeamDTO } from '../models/team.interface';
 import { Team } from '../models/team.object-type';
+import { Teams } from '../models/teams.object-type';
 import { TeamsService } from '../services/teams.service';
 
 @Resolver(() => Team)
@@ -20,10 +24,13 @@ export class TeamsResolver {
     private readonly usersService: UsersService,
   ) {}
 
-  @Query(() => [Team], { nullable: true })
+  @Query(() => Teams, { nullable: true })
   @UseGuards(GqlAuthGuard)
-  public async teams(): Promise<Team[]> {
-    return this.teamsService.findAll();
+  public async teams(
+    @Args('pagination', { type: () => PaginationInput }) pagination: IPagination,
+    @Args('courseId', { type: () => String }) courseId: string,
+  ): Promise<IEntityList<Team>> {
+    return this.teamsService.findAll({ pagination, courseId });
   }
 
   @ResolveField(() => Course, { name: 'course', nullable: true })

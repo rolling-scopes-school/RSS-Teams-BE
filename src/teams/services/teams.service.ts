@@ -1,3 +1,5 @@
+import { IEntityList } from 'src/shared/models/entity-list.interface';
+import { IPagination } from 'src/shared/models/pagination.interface';
 import { Repository } from 'typeorm';
 
 import { Injectable } from '@nestjs/common';
@@ -14,10 +16,24 @@ export class TeamsService {
     private teamsRepository: Repository<TeamEntity>,
   ) {}
 
-  public findAll(): Promise<TeamEntity[]> {
-    return this.teamsRepository.find({
+  public async findAll(data: {
+    pagination: IPagination;
+    courseId: string;
+  }): Promise<IEntityList<TeamEntity>> {
+    const [teams, count] = await this.teamsRepository.findAndCount({
+      where: {
+        courseId: data.courseId,
+      },
       loadRelationIds: true,
+      skip: data.pagination.skip,
+      take: data.pagination.take,
+      order: { number: 'ASC' },
     });
+
+    return {
+      count,
+      results: teams,
+    };
   }
 
   public findByIds(ids: string[]): Promise<TeamEntity[]> {
