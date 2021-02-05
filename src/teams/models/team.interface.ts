@@ -3,10 +3,10 @@ export interface ITeam {
   number: number;
   password: string;
   courseId: string;
-  tgLink: string;
+  socialLink: string;
   memberIds: string[];
 }
 
-export type ICreateTeamDTO = Pick<ITeam, 'courseId' | 'tgLink'>;
+export type ICreateTeamDTO = Pick<ITeam, 'courseId' | 'socialLink'>;
 
-export type IUpdateTeamDTO = Pick<ITeam, 'id' | 'tgLink'>;
+export type IUpdateTeamDTO = Pick<ITeam, 'id' | 'socialLink'>;

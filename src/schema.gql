@@ -16,7 +16,7 @@ type Team {
   number: Int!
   password: String!
   courseId: String!
-  tgLink: String!
+  socialLink: String!
   memberIds: [String!]
   course: Course
   members: [User!]
@@ -83,11 +83,11 @@ input RemoveUserFromTeamInput {
 }
 
 input CreateTeamInput {
-  tgLink: String!
+  socialLink: String!
   courseId: String!
 }
 
 input UpdateTeamInput {
   id: String!
-  tgLink: String!
+  socialLink: String!
 }

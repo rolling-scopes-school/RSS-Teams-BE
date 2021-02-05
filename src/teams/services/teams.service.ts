@@ -43,7 +43,7 @@ export class TeamsService {
   }
 
   public async updateTeam(data: IUpdateTeamDTO): Promise<TeamEntity> {
-    await this.teamsRepository.update(data.id, { tgLink: data.tgLink });
+    await this.teamsRepository.update(data.id, { socialLink: data.socialLink });
 
     return this.teamsRepository.findOne(data.id, { loadRelationIds: true });
   }

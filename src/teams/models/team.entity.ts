@@ -1,6 +1,14 @@
 import { CourseEntity } from 'src/courses/models/course.entity';
 import { UserEntity } from 'src/users/models/user.entity';
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 import { ITeam } from './team.interface';
 
@@ -16,7 +24,7 @@ export class TeamEntity implements ITeam {
   public password: string;
 
   @Column({ type: 'character varying', length: 255, name: 'tg_link', nullable: true })
-  public tgLink: string;
+  public socialLink: string;
 
   @ManyToOne(() => CourseEntity)
   @JoinColumn({ name: 'course_id' })
