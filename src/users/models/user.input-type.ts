@@ -1,9 +1,9 @@
 import { Field, InputType } from '@nestjs/graphql';
 
-import { IUpdateUser } from './user.interface';
+import { IUpdateUserDTO } from './user.interface';
 
 @InputType()
-export class UpdateUserInput implements IUpdateUser {
+export class UpdateUserInput implements IUpdateUserDTO {
   @Field()
   public id: string;
 

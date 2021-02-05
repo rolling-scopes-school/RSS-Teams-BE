@@ -1,9 +1,9 @@
 import { Field, InputType } from '@nestjs/graphql';
 
-import { ICreateTeam, IUpdateTeam } from './team.interface';
+import { ICreateTeamDTO, IUpdateTeamDTO } from './team.interface';
 
 @InputType()
-export class CreateTeamInput implements ICreateTeam {
+export class CreateTeamInput implements ICreateTeamDTO {
   @Field()
   public tgLink: string;
 
@@ -12,7 +12,7 @@ export class CreateTeamInput implements ICreateTeam {
 }
 
 @InputType()
-export class UpdateTeamInput implements IUpdateTeam {
+export class UpdateTeamInput implements IUpdateTeamDTO {
   @Field()
   public id: string;
 

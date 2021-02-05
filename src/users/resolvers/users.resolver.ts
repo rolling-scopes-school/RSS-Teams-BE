@@ -9,9 +9,13 @@ import { User } from 'src/users/models/user.object-type';
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 
-import { AddUserToTeamInput } from '../models/user-to-team.input';
+import { AddUserToTeamInput, RemoveUserFromTeamInput } from '../models/user-to-team.input-type';
 import { UpdateUserInput } from '../models/user.input-type';
-import { IAddUserToTeam, IUpdateUser } from '../models/user.interface';
+import {
+  IAddUserToTeamDTO,
+  IRemoveUserFromTeamDTO,
+  IUpdateUserDTO,
+} from '../models/user.interface';
 import { UsersService } from '../services/users.service';
 
 @Resolver(() => User)
@@ -57,7 +61,7 @@ export class UsersResolver {
   @Mutation(() => User, { name: 'updateUser' })
   @UseGuards(GqlAuthGuard)
   public async updateUser(
-    @Args({ name: 'user', type: () => UpdateUserInput }) user: IUpdateUser,
+    @Args({ name: 'user', type: () => UpdateUserInput }) user: IUpdateUserDTO,
   ): Promise<User> {
     return this.usersService.updateUser(user);
   }
@@ -65,9 +69,16 @@ export class UsersResolver {
   @Mutation(() => User, { name: 'addUserToTeam' })
   @UseGuards(GqlAuthGuard)
   public async addUserToTeam(
-    @Args({ name: 'data', type: () => AddUserToTeamInput }) data: IAddUserToTeam,
+    @Args({ name: 'data', type: () => AddUserToTeamInput }) data: IAddUserToTeamDTO,
   ): Promise<User> {
-    console.log(data);
     return this.usersService.addUserToTeam(data);
+  }
+
+  @Mutation(() => User, { name: 'removeUserFromTeam' })
+  @UseGuards(GqlAuthGuard)
+  public async removeUserFromTeam(
+    @Args({ name: 'data', type: () => RemoveUserFromTeamInput }) data: IRemoveUserFromTeamDTO,
+  ): Promise<User> {
+    return this.usersService.removeUserFromTeam(data);
   }
 }
