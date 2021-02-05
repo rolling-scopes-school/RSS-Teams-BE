@@ -33,7 +33,7 @@ export class AuthController {
     //   NODE_ENV === ENVIRONMENT.Develop ? 'http://localhost:3000' : 'https://rss-teams.web.app';
     const host: string = 'http://localhost:3000';
 
-    return { url: `${host}/?token=${token}` };
+    return { url: `${host}/token/${token}` };
   }
 
   @Get('token/:token')

@@ -24,6 +24,10 @@ export class TeamsService {
     return this.teamsRepository.findByIds(ids, { loadRelationIds: true, order: { number: 'ASC' } });
   }
 
+  public findTeamByPassword(courseId: string, password: string): Promise<TeamEntity> {
+    return this.teamsRepository.findOne({ courseId, password });
+  }
+
   public async createTeam(data: ICreateTeam): Promise<TeamEntity> {
     const teams: TeamEntity[] = await this.teamsRepository.find({ courseId: data.courseId });
     const nextNumber: number = getNextTeamNumber(teams);
