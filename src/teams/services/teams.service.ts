@@ -47,4 +47,14 @@ export class TeamsService {
 
     return this.teamsRepository.findOne(data.id, { loadRelationIds: true });
   }
+
+  public async checkIfTeamMembersExist(id: string): Promise<boolean> {
+    const team: TeamEntity = await this.teamsRepository.findOne(id, { loadRelationIds: true });
+
+    return Boolean(team.memberIds.length);
+  }
+
+  public async deleteTeam(id: string): Promise<void> {
+    this.teamsRepository.delete({ id });
+  }
 }

@@ -72,6 +72,12 @@ export class UsersService {
       .of(userEntity)
       .remove(data.teamId);
 
+    const hasTeamMembers: Boolean = await this.teamsService.checkIfTeamMembersExist(data.teamId);
+
+    if (!hasTeamMembers) {
+      await this.teamsService.deleteTeam(data.teamId);
+    }
+
     return this.usersRepository.findOne(data.userId, {
       loadRelationIds: true,
     });
