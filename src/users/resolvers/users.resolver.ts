@@ -2,6 +2,9 @@ import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 import { GqlAuthGuard } from 'src/auth/guards/gql-auth.guard';
 import { Course } from 'src/courses/models/course.object-type';
 import { CoursesService } from 'src/courses/services/courses.service';
+import { IEntityList } from 'src/shared/models/entity-list.interface';
+import { PaginationInput } from 'src/shared/models/pagination.input-type';
+import { IPagination } from 'src/shared/models/pagination.interface';
 import { Team } from 'src/teams/models/team.object-type';
 import { TeamsService } from 'src/teams/services/teams.service';
 import { User } from 'src/users/models/user.object-type';
@@ -16,6 +19,7 @@ import {
   IRemoveUserFromTeamDTO,
   IUpdateUserDTO,
 } from '../models/user.interface';
+import { Users } from '../models/users.object-type';
 import { UsersService } from '../services/users.service';
 
 @Resolver(() => User)
@@ -32,10 +36,13 @@ export class UsersResolver {
     return this.usersService.findOne(github);
   }
 
-  @Query(() => [User], { nullable: true })
+  @Query(() => Users, { nullable: true })
   @UseGuards(GqlAuthGuard)
-  public async users(): Promise<User[]> {
-    return this.usersService.findAll();
+  public async users(
+    @Args('pagination', { type: () => PaginationInput }) pagination: IPagination,
+    @Args('courseId', { type: () => String }) courseId: string,
+  ): Promise<IEntityList<User>> {
+    return this.usersService.findAll({ pagination, courseId });
   }
 
   @Query(() => User)
