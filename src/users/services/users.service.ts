@@ -1,10 +1,12 @@
+import { ITeam } from 'src/teams/models/team.interface';
+import { TeamsService } from 'src/teams/services/teams.service';
 import { Connection, Like, Repository } from 'typeorm';
 
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { UserEntity } from '../models/user.entity';
-import { IUser } from '../models/user.interface';
+import { IAddUserToTeam, IUser } from '../models/user.interface';
 
 @Injectable()
 export class UsersService {
@@ -12,6 +14,7 @@ export class UsersService {
     @InjectRepository(UserEntity)
     private usersRepository: Repository<UserEntity>,
     private readonly connection: Connection,
+    private readonly teamsService: TeamsService,
   ) {}
 
   public findAll(): Promise<UserEntity[]> {
@@ -35,15 +38,36 @@ export class UsersService {
     return this.usersRepository.save(user);
   }
 
+  public async addUserToTeam(data: IAddUserToTeam): Promise<UserEntity> {
+    const team: ITeam = await this.teamsService.findTeamByPassword(
+      data.courseId,
+      data.teamPassword,
+    );
+
+    if (team) {
+      const userEntity: UserEntity = await this.usersRepository.findOne(data.userId, {
+        loadRelationIds: true,
+      });
+
+      await this.connection
+        .createQueryBuilder()
+        .relation(UserEntity, 'teamIds')
+        .of(userEntity)
+        .add(team.id);
+    }
+
+    return this.usersRepository.findOne(data.userId, {
+      loadRelationIds: true,
+    });
+  }
+
   public async updateUser(data: Partial<IUser>): Promise<UserEntity> {
     const { id, courseIds, ...user } = data;
     await this.usersRepository.update(id, { ...user });
 
-    const findUser: Promise<UserEntity> = this.usersRepository.findOne(data.id, {
+    const userEntity: UserEntity = await this.usersRepository.findOne(data.id, {
       loadRelationIds: true,
     });
-
-    const userEntity: UserEntity = await findUser;
 
     courseIds?.forEach(async item => {
       await this.connection
@@ -53,6 +77,8 @@ export class UsersService {
         .add(item);
     });
 
-    return findUser;
+    return this.usersRepository.findOne(data.id, {
+      loadRelationIds: true,
+    });
   }
 }

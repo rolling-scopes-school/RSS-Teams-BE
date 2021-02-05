@@ -9,8 +9,9 @@ import { User } from 'src/users/models/user.object-type';
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 
+import { AddUserToTeamInput } from '../models/user-to-team.input';
 import { UpdateUserInput } from '../models/user.input-type';
-import { IUpdateUser } from '../models/user.interface';
+import { IAddUserToTeam, IUpdateUser } from '../models/user.interface';
 import { UsersService } from '../services/users.service';
 
 @Resolver(() => User)
@@ -59,5 +60,14 @@ export class UsersResolver {
     @Args({ name: 'user', type: () => UpdateUserInput }) user: IUpdateUser,
   ): Promise<User> {
     return this.usersService.updateUser(user);
+  }
+
+  @Mutation(() => User, { name: 'addUserToTeam' })
+  @UseGuards(GqlAuthGuard)
+  public async addUserToTeam(
+    @Args({ name: 'data', type: () => AddUserToTeamInput }) data: IAddUserToTeam,
+  ): Promise<User> {
+    console.log(data);
+    return this.usersService.addUserToTeam(data);
   }
 }

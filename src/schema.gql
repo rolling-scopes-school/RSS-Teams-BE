@@ -52,6 +52,7 @@ type Query {
 
 type Mutation {
   updateUser(user: UpdateUserInput!): User!
+  addUserToTeam(data: AddUserToTeamInput!): User!
   createTeam(team: CreateTeamInput!): Team!
   updateTeam(team: UpdateTeamInput!): Team!
 }
@@ -67,6 +68,12 @@ input UpdateUserInput {
   country: String
   city: String
   courseIds: [String!]
+}
+
+input AddUserToTeamInput {
+  userId: String!
+  courseId: String!
+  teamPassword: String!
 }
 
 input CreateTeamInput {
