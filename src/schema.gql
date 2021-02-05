@@ -41,6 +41,11 @@ type User {
   teams: [Team!]
 }
 
+type Users {
+  count: Int!
+  results: [User!]!
+}
+
 type Teams {
   count: Int!
   results: [Team!]!
@@ -48,7 +53,7 @@ type Teams {
 
 type Query {
   user(github: String!): User
-  users: [User!]
+  users(courseId: String!, pagination: PaginationInput!): Users
   whoAmI: User!
   courses: [Course!]
   course(id: String!): Course

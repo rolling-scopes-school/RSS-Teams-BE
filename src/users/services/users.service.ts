@@ -1,6 +1,10 @@
+import { CourseEntity } from 'src/courses/models/course.entity';
+import { CoursesService } from 'src/courses/services/courses.service';
+import { IEntityList } from 'src/shared/models/entity-list.interface';
+import { IPagination } from 'src/shared/models/pagination.interface';
 import { ITeam } from 'src/teams/models/team.interface';
 import { TeamsService } from 'src/teams/services/teams.service';
-import { Connection, Like, Repository } from 'typeorm';
+import { Connection, In, Like, Repository } from 'typeorm';
 
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -15,10 +19,29 @@ export class UsersService {
     private usersRepository: Repository<UserEntity>,
     private readonly connection: Connection,
     private readonly teamsService: TeamsService,
+    private readonly coursesService: CoursesService,
   ) {}
 
-  public findAll(): Promise<UserEntity[]> {
-    return this.usersRepository.find({ loadRelationIds: true, order: { score: 'DESC' } });
+  public async findAll(data: {
+    pagination: IPagination;
+    courseId: string;
+  }): Promise<IEntityList<UserEntity>> {
+    const course: CourseEntity = await this.coursesService.findById(data.courseId);
+
+    const [users, count] = await this.usersRepository.findAndCount({
+      where: {
+        id: In([...course.userIds]),
+      },
+      loadRelationIds: true,
+      skip: data.pagination.skip,
+      take: data.pagination.take,
+      order: { score: 'DESC' },
+    });
+
+    return {
+      count,
+      results: users,
+    };
   }
 
   public findByIds(ids: string[]): Promise<UserEntity[]> {
