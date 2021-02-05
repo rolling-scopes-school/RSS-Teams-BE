@@ -5,7 +5,7 @@ import { ICreateTeamDTO, IUpdateTeamDTO } from './team.interface';
 @InputType()
 export class CreateTeamInput implements ICreateTeamDTO {
   @Field()
-  public tgLink: string;
+  public socialLink: string;
 
   @Field()
   public courseId: string;
@@ -17,5 +17,5 @@ export class UpdateTeamInput implements IUpdateTeamDTO {
   public id: string;
 
   @Field()
-  public tgLink: string;
+  public socialLink: string;
 }

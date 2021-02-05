@@ -17,7 +17,7 @@ export class Team implements ITeam {
   public courseId: string;
 
   @Field()
-  public tgLink: string;
+  public socialLink: string;
 
   @Field(() => [String], { nullable: true })
   public memberIds: string[];
