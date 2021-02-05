@@ -1,9 +1,9 @@
 import { Field, InputType } from '@nestjs/graphql';
 
-import { IUserFromTeam, IUserToTeam } from './user.interface';
+import { IAddUserToTeamDTO, IRemoveUserFromTeamDTO } from './user.interface';
 
 @InputType()
-export class AddUserToTeamInput implements IUserToTeam {
+export class AddUserToTeamInput implements IAddUserToTeamDTO {
   @Field()
   public userId: string;
 
@@ -15,7 +15,7 @@ export class AddUserToTeamInput implements IUserToTeam {
 }
 
 @InputType()
-export class RemoveUserFromTeamInput implements IUserFromTeam {
+export class RemoveUserFromTeamInput implements IRemoveUserFromTeamDTO {
   @Field()
   public userId: string;
 

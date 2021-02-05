@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { TeamEntity } from '../models/team.entity';
-import { ICreateTeam, IUpdateTeam } from '../models/team.interface';
+import { ICreateTeamDTO, IUpdateTeamDTO } from '../models/team.interface';
 import { getNextTeamNumber } from '../utils/get-next-team-number.util';
 
 @Injectable()
@@ -28,7 +28,7 @@ export class TeamsService {
     return this.teamsRepository.findOne({ courseId, password });
   }
 
-  public async createTeam(data: ICreateTeam): Promise<TeamEntity> {
+  public async createTeam(data: ICreateTeamDTO): Promise<TeamEntity> {
     const teams: TeamEntity[] = await this.teamsRepository.find({ courseId: data.courseId });
     const nextNumber: number = getNextTeamNumber(teams);
     const password: string = Math.random().toString(36).substr(2, 8);
@@ -42,7 +42,7 @@ export class TeamsService {
     return this.teamsRepository.save(team);
   }
 
-  public async updateTeam(data: IUpdateTeam): Promise<TeamEntity> {
+  public async updateTeam(data: IUpdateTeamDTO): Promise<TeamEntity> {
     await this.teamsRepository.update(data.id, { tgLink: data.tgLink });
 
     return this.teamsRepository.findOne(data.id, { loadRelationIds: true });

@@ -15,15 +15,15 @@ export interface IUser {
   teamIds: string[];
 }
 
-export type IUpdateUser = Partial<IUser>;
+export type IUpdateUserDTO = Partial<IUser>;
 
-export interface IUserToTeam {
+export interface IAddUserToTeamDTO {
   userId: string;
   courseId: string;
   teamPassword: string;
 }
 
-export interface IUserFromTeam {
+export interface IRemoveUserFromTeamDTO {
   userId: string;
   teamId: string;
 }

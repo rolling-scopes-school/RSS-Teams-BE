@@ -7,6 +7,6 @@ export interface ITeam {
   memberIds: string[];
 }
 
-export type ICreateTeam = Pick<ITeam, 'courseId' | 'tgLink'>;
+export type ICreateTeamDTO = Pick<ITeam, 'courseId' | 'tgLink'>;
 
-export type IUpdateTeam = Pick<ITeam, 'id' | 'tgLink'>;
+export type IUpdateTeamDTO = Pick<ITeam, 'id' | 'tgLink'>;
