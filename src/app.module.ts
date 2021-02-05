@@ -12,6 +12,7 @@ import { CoursesModule } from './courses/courses.module';
 import { TeamsModule } from './teams/teams.module';
 import { TypeOrmConfigService } from './type-orm-config.service';
 import { UsersModule } from './users/users.module';
+import { SharedModule } from './shared/shared.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { UsersModule } from './users/users.module';
     CoursesModule,
     TeamsModule,
     AuthModule,
+    SharedModule,
   ],
   controllers: [AppController],
   providers: [AppService, TypeOrmConfigService],

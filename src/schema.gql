@@ -41,13 +41,23 @@ type User {
   teams: [Team!]
 }
 
+type Teams {
+  count: Int!
+  results: [Team!]!
+}
+
 type Query {
   user(github: String!): User
   users: [User!]
   whoAmI: User!
   courses: [Course!]
   course(id: String!): Course
-  teams: [Team!]
+  teams(courseId: String!, pagination: PaginationInput!): Teams
+}
+
+input PaginationInput {
+  skip: Int = 0
+  take: Int = 10
 }
 
 type Mutation {
