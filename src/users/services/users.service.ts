@@ -1,10 +1,8 @@
-import { CourseEntity } from 'src/courses/models/course.entity';
-import { CoursesService } from 'src/courses/services/courses.service';
 import { IEntityList } from 'src/shared/models/entity-list.interface';
 import { IPagination } from 'src/shared/models/pagination.interface';
 import { ITeam } from 'src/teams/models/team.interface';
 import { TeamsService } from 'src/teams/services/teams.service';
-import { Connection, In, Like, Repository } from 'typeorm';
+import { Connection, getRepository, Like, Repository } from 'typeorm';
 
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -16,30 +14,30 @@ import { IAddUserToTeamDTO, IRemoveUserFromTeamDTO, IUser } from '../models/user
 export class UsersService {
   constructor(
     @InjectRepository(UserEntity)
-    private usersRepository: Repository<UserEntity>,
+    private readonly usersRepository: Repository<UserEntity>,
     private readonly connection: Connection,
     private readonly teamsService: TeamsService,
-    private readonly coursesService: CoursesService,
   ) {}
 
   public async findAll(data: {
     pagination: IPagination;
     courseId: string;
   }): Promise<IEntityList<UserEntity>> {
-    const course: CourseEntity = await this.coursesService.findById(data.courseId);
-
-    const [users, count] = await this.usersRepository.findAndCount({
-      where: {
-        id: In([...course.userIds]),
-      },
-      loadRelationIds: true,
-      skip: data.pagination.skip,
-      take: data.pagination.take,
-      order: { score: 'DESC' },
-    });
+    const userRepo: Repository<UserEntity> = getRepository(UserEntity);
+    const [users, count] = await userRepo
+      .createQueryBuilder()
+      .select('user')
+      .from(UserEntity, 'user')
+      .loadAllRelationIds()
+      .leftJoinAndSelect('user.courseIds', 'course')
+      .where('course.id = :id', { id: data.courseId })
+      .orderBy('user.score', 'ASC')
+      .skip(data.pagination.skip)
+      .take(data.pagination.take)
+      .getManyAndCount();
 
     return {
-      count,
+      count: count,
       results: users,
     };
   }
