@@ -1,5 +1,6 @@
 import { IEntityList } from 'src/shared/models/entity-list.interface';
 import { IPagination } from 'src/shared/models/pagination.interface';
+import { TeamEntity } from 'src/teams/models/team.entity';
 import { ITeam } from 'src/teams/models/team.interface';
 import { TeamsService } from 'src/teams/services/teams.service';
 import { Connection, getRepository, Like, Repository } from 'typeorm';
@@ -66,15 +67,7 @@ export class UsersService {
     );
 
     if (team) {
-      const userEntity: UserEntity = await this.usersRepository.findOne(data.userId, {
-        loadRelationIds: true,
-      });
-
-      await this.connection
-        .createQueryBuilder()
-        .relation(UserEntity, 'teamIds')
-        .of(userEntity)
-        .add(team.id);
+      await this.associateUserWithTeam(team, data.userId);
     }
 
     return this.usersRepository.findOne(data.userId, {
@@ -123,5 +116,17 @@ export class UsersService {
     return this.usersRepository.findOne(data.id, {
       loadRelationIds: true,
     });
+  }
+
+  private async associateUserWithTeam(team: TeamEntity, userId: string): Promise<void> {
+    const userEntity: UserEntity = await this.usersRepository.findOne(userId, {
+      loadRelationIds: true,
+    });
+
+    return this.connection
+      .createQueryBuilder()
+      .relation(UserEntity, 'teamIds')
+      .of(userEntity)
+      .add(team.id);
   }
 }

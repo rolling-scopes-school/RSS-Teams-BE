@@ -5,7 +5,7 @@ import { User } from 'src/users/models/user.object-type';
 import { UsersService } from 'src/users/services/users.service';
 
 import { UseGuards } from '@nestjs/common';
-import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 
 import { Course } from '../models/course.object-type';
 import { CoursesService } from '../services/courses.service';
@@ -42,5 +42,13 @@ export class CoursesResolver {
     const { userIds } = course;
 
     return this.usersService.findByIds(userIds);
+  }
+
+  @Mutation(() => Boolean, { name: 'sortStudents' })
+  @UseGuards(GqlAuthGuard)
+  public async sortStudents(
+    @Args({ name: 'courseId', type: () => String }) courseId: string,
+  ): Promise<boolean> {
+    return this.courseService.sortStudents(courseId);
   }
 }
