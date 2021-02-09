@@ -34,13 +34,9 @@ export class UsersService {
     if (data.filter.teamFilter) {
       const course: CourseEntity = await this.coursesService.findById(data.courseId);
       teamIds = course.teamIds;
-
-      console.log(teamIds);
     }
 
     const condition: string = this.getWhereString(data.filter, teamIds);
-    console.log(condition);
-
     const userRepo: Repository<UserEntity> = getRepository(UserEntity);
     const [users, count] = await userRepo
       .createQueryBuilder()
