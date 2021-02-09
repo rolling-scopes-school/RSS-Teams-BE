@@ -16,9 +16,8 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       migrationsTableName: 'migrations',
       migrationsTransactionMode: 'all',
       logging: true,
-      logger: 'file',
       synchronize: false,
-      entityPrefix: 'rss_',
+      entityPrefix: this.configService.get<string>('DATABASE_PREFIX'),
       ssl: { rejectUnauthorized: false },
     };
   }

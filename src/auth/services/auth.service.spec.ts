@@ -1,10 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
+
 import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
   let service: AuthService;
 
   beforeEach(async () => {
+    // eslint-disable-next-line no-shadow
     const module: TestingModule = await Test.createTestingModule({
       providers: [AuthService],
     }).compile();

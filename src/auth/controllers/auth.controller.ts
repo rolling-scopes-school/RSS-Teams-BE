@@ -17,7 +17,6 @@ export class AuthController {
   @UseGuards(AuthGuard('github'))
   @Get('github')
   public async login(@Request() req: Express.Request): Promise<unknown> {
-    console.log('===================== login =====================');
     return this.authService.login(req.user as IUser);
   }
 
@@ -25,13 +24,8 @@ export class AuthController {
   @Get('github/callback')
   @Redirect('http://localhost:3000/', 302)
   public async cb(@Request() req: Express.Request): Promise<unknown> {
-    console.log('===================== callback =====================');
     const token: string = (await this.authService.login(req.user as IUser)).access_token;
-    const NODE_ENV: string = this.configService.get('NODE_ENV');
-
-    // const host: string =
-    //   NODE_ENV === ENVIRONMENT.Develop ? 'http://localhost:3000' : 'https://rss-teams.web.app';
-    const host: string = 'http://localhost:3000';
+    const host: string = this.configService.get('FRONT_END');
 
     return { url: `${host}/token/${token}` };
   }

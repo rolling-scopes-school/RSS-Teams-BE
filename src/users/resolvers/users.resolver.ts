@@ -2,6 +2,7 @@ import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 import { GqlAuthGuard } from 'src/auth/guards/gql-auth.guard';
 import { Course } from 'src/courses/models/course.object-type';
 import { CoursesService } from 'src/courses/services/courses.service';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { IEntityList } from 'src/shared/models/entity-list.interface';
 import { PaginationInput } from 'src/shared/models/pagination.input-type';
 import { IPagination } from 'src/shared/models/pagination.interface';
