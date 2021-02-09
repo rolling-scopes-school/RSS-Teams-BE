@@ -12,6 +12,8 @@ import { User } from 'src/users/models/user.object-type';
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 
+import { UserFilterInput } from '../models/user-filter.input-type';
+import { IUserFilter } from '../models/user-filter.interface';
 import { AddUserToTeamInput, RemoveUserFromTeamInput } from '../models/user-to-team.input-type';
 import { UpdateUserInput } from '../models/user.input-type';
 import {
@@ -21,6 +23,15 @@ import {
 } from '../models/user.interface';
 import { Users } from '../models/users.object-type';
 import { UsersService } from '../services/users.service';
+
+const FILTER_DEFAULT_VALUE: IUserFilter = {
+  discord: null,
+  github: null,
+  location: null,
+  courseName: null,
+  sortingOrder: 'DESC',
+  teamFilter: false,
+};
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -41,8 +52,18 @@ export class UsersResolver {
   public async users(
     @Args('pagination', { type: () => PaginationInput }) pagination: IPagination,
     @Args('courseId', { type: () => String }) courseId: string,
+    @Args('filter', {
+      type: () => UserFilterInput,
+      nullable: true,
+      defaultValue: FILTER_DEFAULT_VALUE,
+    })
+    filter: IUserFilter,
   ): Promise<IEntityList<User>> {
-    return this.usersService.findAll({ pagination, courseId });
+    return this.usersService.findAll({
+      pagination,
+      courseId,
+      filter,
+    });
   }
 
   @Query(() => User)
