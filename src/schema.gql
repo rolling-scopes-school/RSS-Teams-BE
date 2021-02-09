@@ -53,11 +53,20 @@ type Teams {
 
 type Query {
   user(github: String!): User
-  users(courseId: String!, pagination: PaginationInput!): Users
+  users(filter: UserFilterInput = {discord: null, github: null, location: null, courseName: null, sortingOrder: "DESC", teamFilter: false}, courseId: String!, pagination: PaginationInput!): Users
   whoAmI: User!
   courses: [Course!]
   course(id: String!): Course
   teams(courseId: String!, pagination: PaginationInput!): Teams
+}
+
+input UserFilterInput {
+  discord: String
+  github: String
+  location: String
+  courseName: String
+  sortingOrder: String
+  teamFilter: Boolean
 }
 
 input PaginationInput {
