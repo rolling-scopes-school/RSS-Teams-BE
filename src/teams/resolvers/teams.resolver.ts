@@ -51,9 +51,25 @@ export class TeamsResolver {
   @Mutation(() => Team, { name: 'createTeam' })
   @UseGuards(GqlAuthGuard)
   public async createTeam(
-    @Args({ name: 'team', type: () => CreateTeamInput }) team: ICreateTeamDTO,
+    @Args({ name: 'team', type: () => CreateTeamInput }) data: ICreateTeamDTO,
   ): Promise<Team> {
-    return this.teamsService.createTeam(team);
+    const team: Team = await this.teamsService.createTeam(data);
+
+    if (data.ownerId) {
+      await this.usersService.addUserToTeam({
+        userId: data.ownerId,
+        teamPassword: team.password,
+        courseId: data.courseId,
+      });
+
+      if (team.memberIds) {
+        team.memberIds.push(data.ownerId);
+      } else {
+        team.memberIds = [data.ownerId];
+      }
+    }
+
+    return team;
   }
 
   @Mutation(() => Team, { name: 'updateTeam' })

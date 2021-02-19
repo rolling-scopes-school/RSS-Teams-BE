@@ -9,6 +9,9 @@ export class CreateTeamInput implements ICreateTeamDTO {
 
   @Field()
   public courseId: string;
+
+  @Field({ nullable: true })
+  public ownerId: string;
 }
 
 @InputType()

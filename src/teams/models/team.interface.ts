@@ -7,6 +7,8 @@ export interface ITeam {
   memberIds: string[];
 }
 
-export type ICreateTeamDTO = Pick<ITeam, 'courseId' | 'socialLink'>;
+export interface ICreateTeamDTO extends Pick<ITeam, 'courseId' | 'socialLink'> {
+  ownerId?: string;
+}
 
 export type IUpdateTeamDTO = Pick<ITeam, 'id' | 'socialLink'>;
