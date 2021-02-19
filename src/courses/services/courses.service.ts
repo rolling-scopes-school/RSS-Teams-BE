@@ -25,7 +25,7 @@ export class CoursesService {
   }
 
   public async sortStudents(courseId: string): Promise<boolean> {
-    const MAX_TEAM_MEMBERS_NUMBER: number = 5;
+    const MAX_TEAM_MEMBERS_NUMBER: number = 3;
     const teamRepo: Repository<TeamEntity> = getRepository(TeamEntity);
     const userIds: string[] = [];
 
@@ -58,19 +58,12 @@ export class CoursesService {
         .orderBy('user.score', 'ASC')
         .getMany();
 
-      users.forEach(async user => {
+      for (const user of users) {
         if (userIdsSet.has(user.id)) {
           return;
         }
 
-        if (filteredTeams[currentTeamIndex]) {
-          currentTeam = filteredTeams[currentTeamIndex];
-        } else {
-          currentTeam = await this.teamsService.createTeam({
-            courseId,
-            socialLink: '',
-          });
-        }
+        currentTeam = await this.getOrCreateTeam(filteredTeams, currentTeamIndex, courseId);
 
         userIdsSet.add(user.id);
 
@@ -89,7 +82,7 @@ export class CoursesService {
         if (currentTeam.memberIds.length >= MAX_TEAM_MEMBERS_NUMBER) {
           currentTeamIndex++;
         }
-      });
+      }
 
       return true;
     } catch (error) {
@@ -104,5 +97,26 @@ export class CoursesService {
         loadRelationIds: true,
       },
     );
+  }
+
+  private async getOrCreateTeam(
+    filteredTeams: TeamEntity[],
+    currentTeamIndex: number,
+    courseId: string,
+  ): Promise<TeamEntity> {
+    let currentTeam: TeamEntity;
+
+    if (filteredTeams[currentTeamIndex]) {
+      currentTeam = filteredTeams[currentTeamIndex];
+    } else {
+      currentTeam = await this.teamsService.createTeam({
+        courseId,
+        socialLink: '',
+      });
+
+      filteredTeams.push(currentTeam);
+    }
+
+    return currentTeam;
   }
 }
