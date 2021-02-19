@@ -25,7 +25,7 @@ export class CoursesService {
   }
 
   public async sortStudents(courseId: string): Promise<boolean> {
-    const MAX_TEAM_MEMBERS_NUMBER: number = 3;
+    const MAX_TEAM_MEMBERS_NUMBER: number = 5;
     const teamRepo: Repository<TeamEntity> = getRepository(TeamEntity);
     const userIds: string[] = [];
 
