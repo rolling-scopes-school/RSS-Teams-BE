@@ -1,9 +1,1 @@
 runtime: nodejs14
-env_variables:
-  CALLBACK_URL: https://rss-teams.herokuapp.com/auth/github/callback
-  DATABASE_PREFIX: rss_prod_
-  DATABASE_URL: postgres://cnugxtdxaqfsix:4f9a8ab2e722c9922197fde394868a3cfa6a21b74eade2ca39b4f70151cf528b@ec2-52-208-138-246.eu-west-1.compute.amazonaws.com:5432/d3kgu2bja4e28n
-  FRONT_END: https://rss-teams.web.app
-  GITHUB_CLIENT_ID: 37fe944fb1458f370b1b
-  GITHUB_CLIENT_SECRET: 888983f1dfa8499578595874c9e0cac6ea06b8e9
-  JWT_SECRET: rss-teams-production
