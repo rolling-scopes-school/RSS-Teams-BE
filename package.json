@@ -1,8 +1,8 @@
 {
   "name": "rss-teams-be",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "RS School - Teams",
+  "author": "Andrei Shelenhouski",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
@@ -23,7 +23,9 @@
     "typeorm:migrate": "npm run typeorm migration:generate -- -n",
     "typeorm:run": "npm run typeorm migration:run",
     "postinstall": "node postinstall",
-    "deploy:manual": "git push heroku main"
+    "deploy:heroku": "git push heroku main",
+    "deploy:gcp": "npm run build && gcloud app deploy",
+    "logs:gcp": "gcloud app logs tail -s default"
   },
   "dependencies": {
     "@nestjs/common": "^7.5.1",

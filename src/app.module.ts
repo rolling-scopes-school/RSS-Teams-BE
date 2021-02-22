@@ -1,5 +1,3 @@
-import { join } from 'path';
-
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -20,7 +18,7 @@ import { UsersModule } from './users/users.module';
       isGlobal: true,
     }),
     GraphQLModule.forRoot({
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      autoSchemaFile: true,
       introspection: true,
       playground: true,
     }),
