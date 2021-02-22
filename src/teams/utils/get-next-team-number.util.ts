@@ -4,7 +4,7 @@ export const getNextTeamNumber: (arr: ITeam[]) => number = (arr: ITeam[]): numbe
   let missedNumber: number;
   let lastNumber: number;
 
-  const positiveNumbers: number[] = arr.map(item => item.number).sort();
+  const positiveNumbers: number[] = arr.map(item => item.number).sort((a, b) => a - b);
 
   if (!positiveNumbers.length) {
     return 1;
