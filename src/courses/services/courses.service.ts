@@ -59,7 +59,7 @@ export class CoursesService {
         .getMany();
 
       for (const user of users) {
-        if (userIdsSet.has(user.id)) {
+        if (userIdsSet.has(user.id) && user.isAdmin) {
           return;
         }
 
