@@ -110,6 +110,7 @@ input RemoveUserFromTeamInput {
 input CreateTeamInput {
   socialLink: String!
   courseId: String!
+  ownerId: String
 }
 
 input UpdateTeamInput {
