@@ -1,8 +1,8 @@
 import { IEntityList } from 'src/shared/models/entity-list.interface';
 import { IPagination } from 'src/shared/models/pagination.interface';
-import { Repository } from 'typeorm';
+import { Connection, QueryRunner, Repository } from 'typeorm';
 
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { TeamEntity } from '../models/team.entity';
@@ -14,6 +14,7 @@ export class TeamsService {
   constructor(
     @InjectRepository(TeamEntity)
     private teamsRepository: Repository<TeamEntity>,
+    private connection: Connection,
   ) {}
 
   public async findAll(data: {
@@ -45,17 +46,34 @@ export class TeamsService {
   }
 
   public async createTeam(data: ICreateTeamDTO): Promise<TeamEntity> {
-    const teams: TeamEntity[] = await this.teamsRepository.find({ courseId: data.courseId });
-    const nextNumber: number = getNextTeamNumber(teams);
-    const password: string = Math.random().toString(36).substr(2, 8);
+    const queryRunner: QueryRunner = this.connection.createQueryRunner();
+    let team: TeamEntity;
 
-    const team: TeamEntity = this.teamsRepository.create({
-      ...data,
-      password,
-      number: nextNumber,
-    });
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
 
-    return this.teamsRepository.save(team);
+    try {
+      const teams: TeamEntity[] = await this.teamsRepository.find({ courseId: data.courseId });
+      const nextNumber: number = getNextTeamNumber(teams);
+      const password: string = Math.random().toString(36).substr(2, 8);
+
+      team = await queryRunner.manager.create(TeamEntity, {
+        ...data,
+        password,
+        number: nextNumber,
+      });
+
+      team = await queryRunner.manager.save(team);
+
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw new InternalServerErrorException();
+    } finally {
+      await queryRunner.release();
+    }
+
+    return team;
   }
 
   public async updateTeam(data: IUpdateTeamDTO): Promise<TeamEntity> {
