@@ -42,7 +42,6 @@ export class UsersService {
       .createQueryBuilder()
       .select('user')
       .from(UserEntity, 'user')
-      .loadAllRelationIds()
       .leftJoinAndSelect('user.teamIds', 'team')
       .leftJoinAndSelect('user.courseIds', 'course')
       .leftJoinAndSelect('user.courseIds', 'secondCourse')
@@ -60,9 +59,17 @@ export class UsersService {
       .take(data.pagination.take)
       .getManyAndCount();
 
+    const results: UserEntity[] = users.map(user => ({
+      ...user,
+      courses: user.courseIds,
+      teams: user.teamIds,
+      courseIds: user.courseIds.map(course => course['id']),
+      teamIds: user.teamIds.map(team => team['id']),
+    }));
+
     return {
-      count: count,
-      results: users,
+      count,
+      results,
     };
   }
 

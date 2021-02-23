@@ -52,14 +52,14 @@ export class CoursesService {
         .createQueryBuilder()
         .select('user')
         .from(UserEntity, 'user')
-        .loadAllRelationIds()
         .leftJoinAndSelect('user.courseIds', 'course')
         .where('course.id = :id', { id: courseId })
+        .where('user.isAdmin = :isAdmin', { isAdmin: false })
         .orderBy('user.score', 'ASC')
         .getMany();
 
       for (const user of users) {
-        if (userIdsSet.has(user.id) && user.isAdmin) {
+        if (userIdsSet.has(user.id)) {
           return;
         }
 

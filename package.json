@@ -24,8 +24,7 @@
     "typeorm:run": "npm run typeorm migration:run",
     "postinstall": "node postinstall",
     "deploy:heroku": "git push heroku main",
-    "deploy:gcp": "npm run build && gcloud app deploy",
-    "logs:gcp": "gcloud app logs tail -s default"
+    "deploy:gcp": "npm run build && gcloud app deploy"
   },
   "dependencies": {
     "@nestjs/common": "^7.5.1",
