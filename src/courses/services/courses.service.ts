@@ -60,7 +60,7 @@ export class CoursesService {
 
       for (const user of users) {
         if (userIdsSet.has(user.id)) {
-          return;
+          continue;
         }
 
         currentTeam = await this.getOrCreateTeam(filteredTeams, currentTeamIndex, courseId);
