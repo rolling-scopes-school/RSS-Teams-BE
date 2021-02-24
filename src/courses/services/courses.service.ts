@@ -48,13 +48,14 @@ export class CoursesService {
 
       const userIdsSet: Set<string> = new Set(userIds);
       const userRepo: Repository<UserEntity> = getRepository(UserEntity);
+
       const users: UserEntity[] = await userRepo
         .createQueryBuilder()
         .select('user')
         .from(UserEntity, 'user')
         .leftJoinAndSelect('user.courseIds', 'course')
         .where('course.id = :id', { id: courseId })
-        .where('user.isAdmin = :isAdmin', { isAdmin: false })
+        .andWhere('user.isAdmin = :isAdmin', { isAdmin: false })
         .orderBy('user.score', 'ASC')
         .getMany();
 
