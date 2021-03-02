@@ -37,12 +37,12 @@ export class CoursesService {
         .createQueryBuilder()
         .select('team')
         .from(TeamEntity, 'team')
-        .loadAllRelationIds()
+        .leftJoinAndSelect('team.memberIds', 'user')
         .where('team.courseId = :courseId', { courseId })
         .getMany();
 
       const filteredTeams: TeamEntity[] = teams.filter(team => {
-        userIds.push(...team.memberIds);
+        userIds.push(...team.memberIds.map(user => user['id']));
         return team.memberIds?.length < MAX_TEAM_MEMBERS_NUMBER;
       });
 
@@ -74,11 +74,7 @@ export class CoursesService {
           currentTeam.memberIds = [user.id];
         }
 
-        await userRepo
-          .createQueryBuilder()
-          .relation(UserEntity, 'teamIds')
-          .of(user)
-          .add(currentTeam.id);
+        await userRepo.createQueryBuilder().relation(UserEntity, 'teamIds').of(user).add(currentTeam.id);
 
         if (currentTeam.memberIds.length >= MAX_TEAM_MEMBERS_NUMBER) {
           currentTeamIndex++;
