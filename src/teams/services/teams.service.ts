@@ -17,10 +17,7 @@ export class TeamsService {
     private connection: Connection,
   ) {}
 
-  public async findAll(data: {
-    pagination: IPagination;
-    courseId: string;
-  }): Promise<IEntityList<TeamEntity>> {
+  public async findAll(data: { pagination: IPagination; courseId: string }): Promise<IEntityList<TeamEntity>> {
     const [teams, count] = await this.teamsRepository.findAndCount({
       where: {
         courseId: data.courseId,
@@ -85,7 +82,7 @@ export class TeamsService {
   public async checkIfTeamMembersExist(id: string): Promise<boolean> {
     const team: TeamEntity = await this.teamsRepository.findOne(id, { loadRelationIds: true });
 
-    return Boolean(team.memberIds.length);
+    return Boolean(team?.memberIds.length);
   }
 
   public async deleteTeam(id: string): Promise<void> {

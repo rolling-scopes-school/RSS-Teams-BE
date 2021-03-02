@@ -15,10 +15,15 @@ import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/g
 
 import { UserFilterInput } from '../models/user-filter.input-type';
 import { IUserFilter } from '../models/user-filter.interface';
-import { AddUserToTeamInput, RemoveUserFromTeamInput } from '../models/user-to-team.input-type';
+import {
+  AddUserToTeamInput,
+  RemoveUserFromCourseInput,
+  RemoveUserFromTeamInput,
+} from '../models/user-to-team.input-type';
 import { UpdateUserInput } from '../models/user.input-type';
 import {
   IAddUserToTeamDTO,
+  IRemoveUserFromCourseDTO,
   IRemoveUserFromTeamDTO,
   IUpdateUserDTO,
 } from '../models/user.interface';
@@ -89,9 +94,7 @@ export class UsersResolver {
 
   @Mutation(() => User, { name: 'updateUser' })
   @UseGuards(GqlAuthGuard)
-  public async updateUser(
-    @Args({ name: 'user', type: () => UpdateUserInput }) user: IUpdateUserDTO,
-  ): Promise<User> {
+  public async updateUser(@Args({ name: 'user', type: () => UpdateUserInput }) user: IUpdateUserDTO): Promise<User> {
     return this.usersService.updateUser(user);
   }
 
@@ -109,5 +112,13 @@ export class UsersResolver {
     @Args({ name: 'data', type: () => RemoveUserFromTeamInput }) data: IRemoveUserFromTeamDTO,
   ): Promise<User> {
     return this.usersService.removeUserFromTeam(data);
+  }
+
+  @Mutation(() => User, { name: 'removeUserFromCourse' })
+  @UseGuards(GqlAuthGuard)
+  public async removeUserFromCourse(
+    @Args({ name: 'data', type: () => RemoveUserFromCourseInput }) data: IRemoveUserFromCourseDTO,
+  ): Promise<User> {
+    return this.usersService.removeUserFromCourse(data);
   }
 }
