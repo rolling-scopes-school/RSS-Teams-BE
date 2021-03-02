@@ -27,3 +27,8 @@ export interface IRemoveUserFromTeamDTO {
   userId: string;
   teamId: string;
 }
+export interface IRemoveUserFromCourseDTO {
+  userId: string;
+  teamId?: string;
+  courseId: string;
+}

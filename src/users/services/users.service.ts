@@ -12,7 +12,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import { IUserFilter } from '../models/user-filter.interface';
 import { UserEntity } from '../models/user.entity';
-import { IAddUserToTeamDTO, IRemoveUserFromTeamDTO, IUser } from '../models/user.interface';
+import { IAddUserToTeamDTO, IRemoveUserFromCourseDTO, IRemoveUserFromTeamDTO, IUser } from '../models/user.interface';
 
 @Injectable()
 export class UsersService {
@@ -91,10 +91,7 @@ export class UsersService {
   }
 
   public async addUserToTeam(data: IAddUserToTeamDTO): Promise<UserEntity> {
-    const team: ITeam = await this.teamsService.findTeamByPassword(
-      data.courseId,
-      data.teamPassword,
-    );
+    const team: ITeam = await this.teamsService.findTeamByPassword(data.courseId, data.teamPassword);
 
     if (team) {
       await this.associateUserWithTeam(team, data.userId);
@@ -110,16 +107,31 @@ export class UsersService {
       loadRelationIds: true,
     });
 
-    await this.connection
-      .createQueryBuilder()
-      .relation(UserEntity, 'teamIds')
-      .of(userEntity)
-      .remove(data.teamId);
+    await this.connection.createQueryBuilder().relation(UserEntity, 'teamIds').of(userEntity).remove(data.teamId);
 
     const hasTeamMembers: Boolean = await this.teamsService.checkIfTeamMembersExist(data.teamId);
 
     if (!hasTeamMembers) {
       await this.teamsService.deleteTeam(data.teamId);
+    }
+
+    return this.usersRepository.findOne(data.userId, {
+      loadRelationIds: true,
+    });
+  }
+
+  public async removeUserFromCourse(data: IRemoveUserFromCourseDTO): Promise<UserEntity> {
+    const userEntity: UserEntity = await this.usersRepository.findOne(data.userId, {
+      loadRelationIds: true,
+    });
+
+    await this.connection.createQueryBuilder().relation(UserEntity, 'courseIds').of(userEntity).remove(data.courseId);
+
+    if (data.teamId) {
+      return this.removeUserFromTeam({
+        teamId: data.teamId,
+        userId: data.userId,
+      });
     }
 
     return this.usersRepository.findOne(data.userId, {
@@ -136,11 +148,7 @@ export class UsersService {
     });
 
     courseIds?.forEach(async item => {
-      await this.connection
-        .createQueryBuilder()
-        .relation(UserEntity, 'courseIds')
-        .of(userEntity)
-        .add(item);
+      await this.connection.createQueryBuilder().relation(UserEntity, 'courseIds').of(userEntity).add(item);
     });
 
     return this.usersRepository.findOne(data.id, {
@@ -153,11 +161,7 @@ export class UsersService {
       loadRelationIds: true,
     });
 
-    return this.connection
-      .createQueryBuilder()
-      .relation(UserEntity, 'teamIds')
-      .of(userEntity)
-      .add(team.id);
+    return this.connection.createQueryBuilder().relation(UserEntity, 'teamIds').of(userEntity).add(team.id);
   }
 
   private getWhereString(data: IUserFilter, teamIds: string[] = []): string {
@@ -166,10 +170,8 @@ export class UsersService {
     const githubCondition: string = 'user.github ILIKE :github';
     const locationCondition: string = '(user.city ILIKE :city OR user.country ILIKE :country)';
     const teamCondition: string =
-      teamIds.reduce(
-        (acc, item, index) => `${acc}${index ? ',' : ''}'${item}'`,
-        'team.id NOT IN (',
-      ) + ') OR team.id ISNULL';
+      teamIds.reduce((acc, item, index) => `${acc}${index ? ',' : ''}'${item}'`, 'team.id NOT IN (') +
+      ') OR team.id ISNULL';
 
     const conditionMap: Map<string, string> = new Map([
       ['courseName', courseNameCondition],
