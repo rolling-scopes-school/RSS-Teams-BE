@@ -12,6 +12,12 @@ export class CourseEntity implements ICourse {
   @Column({ name: 'name', nullable: true, type: 'character varying', length: 255 })
   public name?: string;
 
+  @Column({ name: 'is_active', default: false, type: 'boolean' })
+  public isActive: boolean;
+
+  @Column({ name: 'team_size', nullable: true, type: 'int' })
+  public teamSize?: number;
+
   @OneToMany(() => TeamEntity, team => team.courseId)
   @JoinColumn({ name: 'teamIds' })
   public teamIds: string[];
