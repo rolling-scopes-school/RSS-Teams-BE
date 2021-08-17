@@ -14,6 +14,12 @@ const ormConfig = {
 };
 
 const url = process.env.DATABASE_URL;
+const entityPrefix = process.env.DATABASE_PREFIX;
+
+if (Boolean(entityPrefix)) {
+  ormConfig.entityPrefix = entityPrefix;
+}
+
 ormConfig.url = url;
 
 fs.writeFileSync('ormconfig.json', JSON.stringify(ormConfig));

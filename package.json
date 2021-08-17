@@ -22,8 +22,7 @@
     "typeorm:migrate": "npx ts-node ./node_modules/.bin/typeorm migration:generate -n RSSTeams",
     "typeorm:run": "npx ts-node ./node_modules/.bin/typeorm migration:run",
     "postinstall": "node postinstall",
-    "deploy:heroku": "git push heroku main",
-    "deploy:gcp": "npm run build && gcloud app deploy"
+    "deploy:heroku": "git push heroku main"
   },
   "dependencies": {
     "@nestjs/common": "^7.5.1",
