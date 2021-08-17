@@ -1,12 +1,13 @@
-import { TeamEntity } from 'src/teams/models/team.entity';
-import { TeamsService } from 'src/teams/services/teams.service';
-import { UserEntity } from 'src/users/models/user.entity';
-import { getRepository, Repository } from 'typeorm';
-
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
+import { TeamEntity } from 'src/teams/models/team.entity';
+import { TeamsService } from 'src/teams/services/teams.service';
+import { UserEntity } from 'src/users/models/user.entity';
+import { Any, getRepository, Repository } from 'typeorm';
+
 import { CourseEntity } from '../models/course.entity';
+import { ICourse } from '../models/course.interface';
 
 @Injectable()
 export class CoursesService {
@@ -16,15 +17,37 @@ export class CoursesService {
     private readonly teamsService: TeamsService,
   ) {}
 
-  public findAll(): Promise<CourseEntity[]> {
-    return this.coursesRepository.find({ loadRelationIds: true, order: { name: 'DESC' } });
+  public findAll({ isActive }: { isActive: boolean }): Promise<CourseEntity[]> {
+    return this.coursesRepository.find({
+      loadRelationIds: true,
+      order: { name: 'DESC' },
+      where: {
+        isActive: isActive ?? Any([true, false]),
+      },
+    });
   }
 
   public findByIds(ids: string[]): Promise<CourseEntity[]> {
     return this.coursesRepository.findByIds(ids, { loadRelationIds: true });
   }
 
+  public createCourse(data: Partial<ICourse>): Promise<CourseEntity> {
+    const course: CourseEntity = this.coursesRepository.create(data);
+
+    return this.coursesRepository.save(course);
+  }
+
+  public async updateCourse(data: Partial<ICourse>): Promise<CourseEntity> {
+    const { id, ...course } = data;
+    await this.coursesRepository.update(id, { ...course });
+
+    return this.coursesRepository.findOne(data.id, {
+      loadRelationIds: true,
+    });
+  }
+
   public async sortStudents(courseId: string): Promise<boolean> {
+    // TODO: (#18): get max team size from course entity
     const MAX_TEAM_MEMBERS_NUMBER: number = 4;
     const teamRepo: Repository<TeamEntity> = getRepository(TeamEntity);
     const userIds: string[] = [];
