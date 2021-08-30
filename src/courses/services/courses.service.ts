@@ -48,7 +48,7 @@ export class CoursesService {
 
   public async sortStudents(courseId: string): Promise<boolean> {
     // TODO: (#18): get max team size from course entity
-    const MAX_TEAM_MEMBERS_NUMBER: number = 4;
+    const MAX_TEAM_MEMBERS_NUMBER: number = 3;
     const teamRepo: Repository<TeamEntity> = getRepository(TeamEntity);
     const userIds: string[] = [];
 
