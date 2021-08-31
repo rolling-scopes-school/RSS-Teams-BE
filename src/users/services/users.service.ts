@@ -1,3 +1,6 @@
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+
 import { CourseEntity } from 'src/courses/models/course.entity';
 import { CoursesService } from 'src/courses/services/courses.service';
 import { IEntityList } from 'src/shared/models/entity-list.interface';
@@ -6,9 +9,6 @@ import { TeamEntity } from 'src/teams/models/team.entity';
 import { ITeam } from 'src/teams/models/team.interface';
 import { TeamsService } from 'src/teams/services/teams.service';
 import { Connection, getRepository, Like, Repository } from 'typeorm';
-
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 
 import { IUserFilter } from '../models/user-filter.interface';
 import { UserEntity } from '../models/user.entity';
@@ -91,9 +91,14 @@ export class UsersService {
   }
 
   public async addUserToTeam(data: IAddUserToTeamDTO): Promise<UserEntity> {
+    const { teamSize } = await this.coursesService.findById(data.courseId);
     const team: ITeam = await this.teamsService.findTeamByPassword(data.courseId, data.teamPassword);
 
     if (team) {
+      if (team.memberIds?.length >= teamSize) {
+        throw new Error('Maximum number of members reached');
+      }
+
       await this.associateUserWithTeam(team, data.userId);
     }
 
