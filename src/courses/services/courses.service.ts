@@ -47,8 +47,7 @@ export class CoursesService {
   }
 
   public async sortStudents(courseId: string): Promise<boolean> {
-    // TODO: (#18): get max team size from course entity
-    const MAX_TEAM_MEMBERS_NUMBER: number = 3;
+    const { teamSize } = await this.coursesRepository.findOne(courseId);
     const teamRepo: Repository<TeamEntity> = getRepository(TeamEntity);
     const userIds: string[] = [];
 
@@ -66,7 +65,7 @@ export class CoursesService {
 
       const filteredTeams: TeamEntity[] = teams.filter(team => {
         userIds.push(...team.memberIds.map(user => user['id']));
-        return team.memberIds?.length < MAX_TEAM_MEMBERS_NUMBER;
+        return team.memberIds?.length < teamSize;
       });
 
       const userIdsSet: Set<string> = new Set(userIds);
@@ -99,7 +98,7 @@ export class CoursesService {
 
         await userRepo.createQueryBuilder().relation(UserEntity, 'teamIds').of(user).add(currentTeam.id);
 
-        if (currentTeam.memberIds.length >= MAX_TEAM_MEMBERS_NUMBER) {
+        if (currentTeam.memberIds.length >= teamSize) {
           currentTeamIndex++;
         }
       }

@@ -1,3 +1,6 @@
+import { UseGuards } from '@nestjs/common';
+import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 import { GqlAuthGuard } from 'src/auth/guards/gql-auth.guard';
 import { Course } from 'src/courses/models/course.object-type';
@@ -9,9 +12,6 @@ import { IPagination } from 'src/shared/models/pagination.interface';
 import { Team } from 'src/teams/models/team.object-type';
 import { TeamsService } from 'src/teams/services/teams.service';
 import { User } from 'src/users/models/user.object-type';
-
-import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 
 import { UserFilterInput } from '../models/user-filter.input-type';
 import { IUserFilter } from '../models/user-filter.interface';

@@ -1,9 +1,9 @@
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+
 import { IEntityList } from 'src/shared/models/entity-list.interface';
 import { IPagination } from 'src/shared/models/pagination.interface';
 import { Connection, QueryRunner, Repository } from 'typeorm';
-
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 
 import { TeamEntity } from '../models/team.entity';
 import { ICreateTeamDTO, IUpdateTeamDTO } from '../models/team.interface';
@@ -39,7 +39,7 @@ export class TeamsService {
   }
 
   public findTeamByPassword(courseId: string, password: string): Promise<TeamEntity> {
-    return this.teamsRepository.findOne({ courseId, password });
+    return this.teamsRepository.findOne({ courseId, password }, { loadRelationIds: true });
   }
 
   public async createTeam(data: ICreateTeamDTO): Promise<TeamEntity> {
