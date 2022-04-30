@@ -152,9 +152,11 @@ export class UsersService {
       loadRelationIds: true,
     });
 
-    courseIds?.forEach(async item => {
-      await this.connection.createQueryBuilder().relation(UserEntity, 'courseIds').of(userEntity).add(item);
-    });
+    try {
+      await this.connection.createQueryBuilder().relation(UserEntity, 'courseIds').of(userEntity).add(courseIds);
+    } catch (error) {
+      console.log(`updateUser:\n================================\n${JSON.stringify(error)}`);
+    }
 
     return this.usersRepository.findOne(data.id, {
       loadRelationIds: true,
