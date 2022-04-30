@@ -175,8 +175,8 @@ export class UsersService {
     const githubCondition: string = 'user.github ILIKE :github';
     const locationCondition: string = '(user.city ILIKE :city OR user.country ILIKE :country)';
     const teamCondition: string =
-      teamIds.reduce((acc, item, index) => `${acc}${index ? ',' : ''}'${item}'`, 'team.id NOT IN (') +
-      ') OR team.id ISNULL';
+      teamIds.reduce((acc, item, index) => `${acc}${index ? ',' : ''}'${item}'`, '(team.id NOT IN (') +
+      ') OR team.id ISNULL)';
 
     const conditionMap: Map<string, string> = new Map([
       ['courseName', courseNameCondition],
