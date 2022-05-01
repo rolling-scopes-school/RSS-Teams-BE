@@ -8,7 +8,7 @@ import { IPagination } from 'src/shared/models/pagination.interface';
 import { TeamEntity } from 'src/teams/models/team.entity';
 import { ITeam } from 'src/teams/models/team.interface';
 import { TeamsService } from 'src/teams/services/teams.service';
-import { Connection, getRepository, Like, Repository } from 'typeorm';
+import { Connection, getRepository, Repository } from 'typeorm';
 
 import { IUserFilter } from '../models/user-filter.interface';
 import { UserEntity } from '../models/user.entity';
@@ -79,7 +79,7 @@ export class UsersService {
 
   public findOne(github: string): Promise<UserEntity> {
     return this.usersRepository.findOne({
-      where: { github: Like(`%${github}%`) },
+      where: { github: github },
       loadRelationIds: true,
     });
   }
