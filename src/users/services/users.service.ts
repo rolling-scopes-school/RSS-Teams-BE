@@ -153,7 +153,9 @@ export class UsersService {
     });
 
     try {
-      await this.connection.createQueryBuilder().relation(UserEntity, 'courseIds').of(userEntity).add(courseIds);
+      const newCourses: string[] = courseIds.filter((courseId: string) => !userEntity.courseIds.includes(courseId));
+      console.log('Add user to the following courses: ' + newCourses.join(', '));
+      await this.connection.createQueryBuilder().relation(UserEntity, 'courseIds').of(userEntity).add(newCourses);
     } catch (error) {
       console.log(`updateUser:\n================================\n${JSON.stringify(error)}`);
     }
