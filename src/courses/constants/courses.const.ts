@@ -25,8 +25,6 @@ export const COURSES_LIST: unknown[] = [
       createdDate: '2021-01-14T11:45:29.733Z',
       updatedDate: '2021-01-14T11:45:29.733Z',
       name: 'JS PL',
-      gratitudeUrl:
-        'https://discord.com/api/webhooks/799242752914227210/MS4pKSIZI04GPj2bV1Zv3yU4K2szKUf9hZn6TGVGNJZ8sPF39v3MiQP7PFE6SpEAoHep',
     },
   },
   {
@@ -55,8 +53,6 @@ export const COURSES_LIST: unknown[] = [
       createdDate: '2021-01-07T14:04:16.998Z',
       updatedDate: '2021-01-08T09:10:14.770Z',
       name: 'CoreJS RU',
-      gratitudeUrl:
-        'https://discord.com/api/webhooks/582907104667631617/xxlRyoW9qP1BueMPn2FX2rqLdZuptLlVjG-vM43kuOPSO6b1cbBQVktIsIyqBw4dlS3x',
     },
   },
   {
@@ -85,8 +81,6 @@ export const COURSES_LIST: unknown[] = [
       createdDate: '2021-01-08T09:11:19.910Z',
       updatedDate: '2021-01-08T09:11:19.910Z',
       name: 'Angular ',
-      gratitudeUrl:
-        'https://discord.com/api/webhooks/797029539884171284/9y1ITE6z6NFsqjqc68joiNcjFT5rugje95AE0Gxz_vJpGy9hiegrBI0faGQGorI_5CYs',
     },
   },
   {
@@ -115,8 +109,6 @@ export const COURSES_LIST: unknown[] = [
       createdDate: '2021-01-08T09:41:12.710Z',
       updatedDate: '2021-01-08T09:41:12.710Z',
       name: 'React ',
-      gratitudeUrl:
-        'https://discord.com/api/webhooks/797037102965325855/Roa55cOn_iO9V9M4bl9UllI1mO8xXbDHSpiWJAVyIeLyWHOh2CxjA-A-Stccjg9jZ1bd',
     },
   },
   {
@@ -145,8 +137,6 @@ export const COURSES_LIST: unknown[] = [
       createdDate: '2021-01-13T14:12:40.920Z',
       updatedDate: '2021-01-13T14:12:40.920Z',
       name: 'ML',
-      gratitudeUrl:
-        'https://discord.com/api/webhooks/798917126063915008/g4H-lqr42176GFqJWyzomC4FqivXqR5f2z2AM1CfIY_m_iPrBoiXNkomFMiRVdsJcBX5',
     },
   },
   {
@@ -175,8 +165,6 @@ export const COURSES_LIST: unknown[] = [
       createdDate: '2021-01-07T14:04:16.998Z',
       updatedDate: '2021-01-08T09:10:14.770Z',
       name: 'CoreJS RU',
-      gratitudeUrl:
-        'https://discord.com/api/webhooks/582907104667631617/xxlRyoW9qP1BueMPn2FX2rqLdZuptLlVjG-vM43kuOPSO6b1cbBQVktIsIyqBw4dlS3x',
     },
   },
   {
@@ -205,8 +193,6 @@ export const COURSES_LIST: unknown[] = [
       createdDate: '2021-01-07T14:04:16.998Z',
       updatedDate: '2021-01-08T09:10:14.770Z',
       name: 'CoreJS RU',
-      gratitudeUrl:
-        'https://discord.com/api/webhooks/582907104667631617/xxlRyoW9qP1BueMPn2FX2rqLdZuptLlVjG-vM43kuOPSO6b1cbBQVktIsIyqBw4dlS3x',
     },
   },
   {
@@ -259,8 +245,6 @@ export const COURSES_LIST: unknown[] = [
       createdDate: '2021-01-07T14:04:16.998Z',
       updatedDate: '2021-01-08T09:10:14.770Z',
       name: 'CoreJS RU',
-      gratitudeUrl:
-        'https://discord.com/api/webhooks/582907104667631617/xxlRyoW9qP1BueMPn2FX2rqLdZuptLlVjG-vM43kuOPSO6b1cbBQVktIsIyqBw4dlS3x',
     },
   },
   {
@@ -312,8 +296,6 @@ export const COURSES_LIST: unknown[] = [
       createdDate: '2021-01-08T09:41:12.710Z',
       updatedDate: '2021-01-08T09:41:12.710Z',
       name: 'React ',
-      gratitudeUrl:
-        'https://discord.com/api/webhooks/797037102965325855/Roa55cOn_iO9V9M4bl9UllI1mO8xXbDHSpiWJAVyIeLyWHOh2CxjA-A-Stccjg9jZ1bd',
     },
   },
   {
@@ -439,7 +421,8 @@ export const COURSES_LIST: unknown[] = [
     name: 'The Rolling Scopes Poland',
     fullName: 'JS/FE Mentoring Program in Poland',
     alias: 'rss-pl-2020-q1',
-    description: 'Javascript/Front-end Mentoring Program in Poland.\nFree | Online | in English',
+    description:
+      'Javascript/Front-end Mentoring Program in Poland.\nFree | Online | in English',
     descriptionUrl: null,
     year: null,
     startDate: '2020-03-05T07:46:38.048Z',
@@ -458,8 +441,6 @@ export const COURSES_LIST: unknown[] = [
       createdDate: '2021-01-14T11:45:29.733Z',
       updatedDate: '2021-01-14T11:45:29.733Z',
       name: 'JS PL',
-      gratitudeUrl:
-        'https://discord.com/api/webhooks/799242752914227210/MS4pKSIZI04GPj2bV1Zv3yU4K2szKUf9hZn6TGVGNJZ8sPF39v3MiQP7PFE6SpEAoHep',
     },
   },
   {
